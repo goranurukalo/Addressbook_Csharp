@@ -1,0 +1,24 @@
+﻿<Window x:Class="AddressBook.PersonDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AddressBook"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+        Width="300" 
+        SizeToContent="Height"
+      Title="PersonDialog">
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ContentControl Grid.Row="0" Content="{Binding}" ContentTemplate="{StaticResource personEditor}" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Margin="5" Padding="5,2" Name="btnOK" Width="{Binding ElementName=btnCancel, Path=ActualWidth, Mode=OneTime}" IsDefault="True" Click="btnOK_Click">OK</Button>
+            <Button Margin="5" Padding="5,2" Name="btnCancel" IsCancel="True">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>

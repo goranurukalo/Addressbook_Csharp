@@ -1,0 +1,92 @@
+﻿<Window x:Class="AddressBook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        xmlns:local="clr-namespace:AddressBook"
+        xmlns:model="clr-namespace:AddressBook.Model"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme1.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Label">
+                <Setter Property="FontWeight" Value="ExtraBold"/>
+            </Style>
+        </ResourceDictionary>        
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Persons">
+                <MenuItem Name="miPersonsAdd" Header="Add..." Click="miPersonsAdd_Click"/>
+                <MenuItem Name="miPersonsRemove" Header="Remove..." Click="miPersonsRemove_Click"/>
+            </MenuItem>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="top">
+            <ToolBar>
+                <Button Name="btnOpen" Click="btnOpen_Click">Open...</Button>
+                <Button Name="btnSaveAs" Click="btnSaveAs_Click">Save As...</Button>
+            </ToolBar>
+        </ToolBarTray>
+        
+        <Grid DockPanel.Dock="Top" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="92*" />
+                <ColumnDefinition Width="367*"/>
+            </Grid.ColumnDefinitions>
+            <Label VerticalContentAlignment="Center" Grid.Column="0">Search:</Label>
+            <TextBox Style="{StaticResource textBoxStyle1}" VerticalContentAlignment="Center" Name="txtSearch" Grid.Column="1" TextChanged="txtSearch_TextChanged" Grid.ColumnSpan="2"></TextBox>
+        </Grid>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Row="0" Grid.Column="0"
+                 ItemsSource="{Binding Persons}" 
+                 IsSynchronizedWithCurrentItem="True">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Margin="3" Width="10" Height="10">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Gender.Name}" Value="Male">
+                                                    <Setter Property="Fill" Value="blue" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Gender}" Value="{x:Static model:Gender.Female}">
+                                                    <Setter Property="Fill" Value="Pink" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Gender}" Value="{x:Null}">
+                                                    <Setter Property="Fill" Value="Black" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock Text="{Binding Name}"/>
+                            </StackPanel>
+                            
+                            <TextBlock Text="{Binding BirthDate}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add..." Click="miPersonsAdd_Click" />
+                        <MenuItem Header="Remove..." Click="miPersonsRemove_Click" />
+                    </ContextMenu>                    
+                </ListBox.ContextMenu>
+            </ListBox>
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+            <ContentControl Grid.Column="2" Content="{Binding Persons/}" ContentTemplate="{StaticResource personEditor}"/>
+        </Grid>
+    </DockPanel>
+
+</Window>
